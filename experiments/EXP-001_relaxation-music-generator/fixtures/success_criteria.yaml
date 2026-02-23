@@ -1,0 +1,20 @@
+criteria:
+  - name: "YouTube-sökning fungerar"
+    test: "pytest tests/test_youtube_search.py"
+    expected: "Returnerar lista med videor sorterade på popularitet"
+
+  - name: "Audio-nedladdning fungerar"
+    test: "pytest tests/test_downloader.py"
+    expected: "Laddar ner och sparar WAV-fil"
+
+  - name: "Ljudanalys extraherar features"
+    test: "pytest tests/test_analyzer.py"
+    expected: "Returnerar tempo, tonart, MFCC, struktur"
+
+  - name: "MIDI-generering skapar giltig fil"
+    test: "pytest tests/test_generator.py"
+    expected: "Genererar spelbar MIDI-fil"
+
+  - name: "Hela pipelinen fungerar end-to-end"
+    test: "pytest tests/test_pipeline.py"
+    expected: "Från sökning till genererad MIDI utan fel"
