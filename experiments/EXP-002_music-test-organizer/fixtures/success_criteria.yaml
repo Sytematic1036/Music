@@ -1,0 +1,33 @@
+criteria:
+  - name: "Mappsystem skapas korrekt"
+    test: "pytest tests/test_001_directory_structure.py"
+    expected: "Alla kategorimappar existerar efter setup"
+
+  - name: "Tempo-kategorisering fungerar"
+    test: "pytest tests/test_002_categorization_logic.py"
+    expected: |
+      - BPM < 80 → slow
+      - BPM 80-120 → medium
+      - BPM > 120 → fast
+
+  - name: "Filoperationer fungerar"
+    test: "pytest tests/test_003_file_operations.py"
+    expected: |
+      - Filer kopieras till rätt kategori
+      - Löpnummer genereras korrekt
+      - Duplicat-hantering fungerar
+
+  - name: "Genre-kategorisering fungerar"
+    test: "pytest tests/test_002_categorization_logic.py"
+    expected: "Manuell kategorisering och metadata-baserad"
+
+  - name: "Integration med analyzer"
+    test: "pytest tests/test_005_integration.py"
+    expected: "Använder befintlig analyzer för tempo-detektering"
+
+test_command: "pytest tests/ -v"
+
+dummy_files_needed:
+  - description: "Tomma .wav-filer för test"
+    location: "tests/fixtures/"
+    count: 5
