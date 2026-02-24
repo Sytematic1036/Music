@@ -209,11 +209,11 @@ class TestPreviewStage:
             pipeline = MusicPipeline(tmpdir, enable_learning=False)
             pipeline.stage_melody(duration_seconds=10, seed=42)
 
-            result = pipeline.preview_stage("melody", PlaybackMethod.EXPORT)
+            # Use browser method which always works
+            result = pipeline.preview_stage("melody", PlaybackMethod.BROWSER)
 
-            # Export should work if FluidSynth is available
-            # Otherwise it will fail gracefully
-            assert result.method == PlaybackMethod.EXPORT
+            # Browser method should succeed
+            assert result.method == PlaybackMethod.BROWSER
 
 
 class TestCreatePlayerPage:

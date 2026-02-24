@@ -477,6 +477,25 @@ class LearningDatabase:
         self.conn.close()
 
 
+def _serialize_dataclass(obj) -> dict:
+    """
+    Convert a dataclass to a JSON-serializable dict.
+
+    Handles Enum values by converting to their .value.
+    """
+    from enum import Enum
+
+    result = {}
+    for key, value in asdict(obj).items():
+        if isinstance(value, Enum):
+            result[key] = value.value
+        elif isinstance(value, tuple):
+            result[key] = list(value)
+        else:
+            result[key] = value
+    return result
+
+
 def create_record_from_generation(
     melody: Melody,
     arrangement: Arrangement,
@@ -504,12 +523,12 @@ def create_record_from_generation(
     return GenerationRecord(
         id=record_id,
         timestamp=datetime.now().isoformat(),
-        melody_params=asdict(melody.params),
-        arrangement_params=asdict(arrangement.params),
+        melody_params=_serialize_dataclass(melody.params),
+        arrangement_params=_serialize_dataclass(arrangement.params),
         production_params={
             "preset": production_params.preset.value,
             "sample_rate": production_params.sample_rate,
-            "mix_settings": asdict(production_params.mix_settings) if production_params.mix_settings else {}
+            "mix_settings": _serialize_dataclass(production_params.mix_settings) if production_params.mix_settings else {}
         },
         uniqueness_score=melody.uniqueness_score,
         track_count=len(arrangement.tracks),
