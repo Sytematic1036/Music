@@ -1,0 +1,40 @@
+criteria:
+  - name: "Melodigenerering fungerar"
+    test: "pytest tests/test_melody.py -v"
+    expected: "Genererar unika melodier, inga duplicerade patterns"
+
+  - name: "Melodi är lyssningsbar"
+    test: "python -m src.melody --preview"
+    expected: "Spelar upp melodi via vald metod"
+
+  - name: "Arrangemang lägger till instrument"
+    test: "pytest tests/test_arrangement.py -v"
+    expected: "Multi-track MIDI med minst 3 instrument-lager"
+
+  - name: "Arrangemang per genre"
+    test: "python -m src.arrangement --genre relaxation"
+    expected: "Genre-specifika instrument (piano, strings, pads för relaxation)"
+
+  - name: "Produktion renderar audio"
+    test: "pytest tests/test_production.py -v"
+    expected: "WAV-fil skapas med korrekt sample rate"
+
+  - name: "Browser player fungerar"
+    test: "Öppna player.html i browser"
+    expected: "Kan ladda MIDI och spela upp"
+
+  - name: "Python player fungerar"
+    test: "python -m src.player melody.mid"
+    expected: "Spelar upp ljud"
+
+  - name: "Export till WAV/MP3"
+    test: "python -m src.production --export wav,mp3"
+    expected: "Skapar både .wav och .mp3 filer"
+
+  - name: "Vector DB sparar parametrar"
+    test: "pytest tests/test_learning.py -v"
+    expected: "Kan spara och söka bland parametrar"
+
+  - name: "Alla tester passerar"
+    test: "pytest tests/ -v"
+    expected: "0 failed"
