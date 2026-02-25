@@ -1,0 +1,43 @@
+# Success Criteria for EXP-004: Rearrange Piano Roll
+
+test_cases:
+  - name: rearrange_tab_visible
+    description: "Rearrange-flik visas i player navigation"
+    verification: playwright
+    expected: "Tab element with text 'Rearrange' is visible"
+
+  - name: notes_render_on_canvas
+    description: "Noter från laddad fil visas på canvas"
+    verification: playwright
+    expected: "Canvas contains rendered note rectangles"
+
+  - name: drag_note_horizontal
+    description: "Kan flytta not i tid genom att dra horisontellt"
+    verification: playwright
+    expected: "Note start_time changes after horizontal drag"
+
+  - name: drag_note_vertical
+    description: "Kan flytta not i tonhöjd genom att dra vertikalt"
+    verification: playwright
+    expected: "Note pitch changes after vertical drag"
+
+  - name: delete_note
+    description: "Kan ta bort not med högerklick eller delete-tangent"
+    verification: playwright
+    expected: "Note disappears from canvas after delete action"
+
+  - name: empty_file_shows_grid
+    description: "Tom fil visar tom piano roll med grid"
+    verification: playwright
+    expected: "Grid lines visible, no notes rendered"
+
+edge_cases:
+  - name: overlapping_notes
+    description: "Överlappande noter hanteras korrekt"
+    verification: manual
+    expected: "Both notes visible, can select either"
+
+  - name: scroll_long_file
+    description: "Lång fil kan scrollas"
+    verification: playwright
+    expected: "Horizontal scroll works for files > viewport width"
