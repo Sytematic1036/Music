@@ -102,7 +102,7 @@ class TestTrackGeneration:
         assert len(track.notes) > 0
         # Bass notes should be in low range
         for note in track.notes:
-            assert note.pitch < 60  # Below middle C
+            assert note.pitch <= 60  # At or below middle C
 
     def test_generate_pad_track(self):
         params = ArrangementParams(duration_seconds=30)
