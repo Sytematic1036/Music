@@ -217,12 +217,14 @@ def download_soundfont(output_dir: str | Path = None) -> Optional[str]:
 def check_fluidsynth() -> bool:
     """Check if FluidSynth is installed."""
     try:
+        # FluidSynth doesn't support --version, use -h instead
         result = subprocess.run(
-            ["fluidsynth", "--version"],
+            ["fluidsynth", "-h"],
             capture_output=True,
             timeout=5
         )
-        return result.returncode == 0
+        # -h returns 1 but outputs help text
+        return b"Usage:" in result.stdout or b"Usage:" in result.stderr
     except Exception:
         return False
 
