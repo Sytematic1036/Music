@@ -12,10 +12,17 @@ import json
 import subprocess
 import tempfile
 from dataclasses import dataclass, field
+from datetime import datetime
 from enum import Enum
 from pathlib import Path
 from typing import Optional
 import shutil
+
+
+def _timestamped_filename(base: str, ext: str) -> str:
+    """Generate filename with timestamp: base_YYYY-MM-DD_HHMM.ext"""
+    ts = datetime.now().strftime("%Y-%m-%d_%H%M")
+    return f"{base}_{ts}.{ext}"
 
 from .arrangement import Arrangement, arrangement_to_midi
 
@@ -68,7 +75,7 @@ class ProductionParams:
     normalize: bool = True
     export_wav: bool = True
     export_mp3: bool = True
-    mp3_bitrate: int = 192
+    mp3_bitrate: int = 320  # High quality
 
 
 @dataclass
@@ -85,12 +92,13 @@ class ProductionResult:
 # Genre-specific mix presets
 GENRE_MIX_PRESETS = {
     ProductionPreset.RELAXATION: MixSettings(
-        master_volume=0.75,
-        bass_boost=-1.0,
-        treble_boost=1.0,
-        reverb_amount=0.4,
-        reverb_decay=2.0,
-        stereo_width=1.2
+        master_volume=0.8,
+        bass_boost=-2.0,      # Less muddy bass
+        mid_boost=1.0,        # Clearer midrange
+        treble_boost=2.0,     # Brighter, cleaner highs
+        reverb_amount=0.25,   # Less reverb = cleaner
+        reverb_decay=1.5,     # Shorter tail
+        stereo_width=1.1
     ),
     ProductionPreset.AMBIENT: MixSettings(
         master_volume=0.7,
@@ -439,12 +447,12 @@ def produce_arrangement(
 
         # Render to WAV
         raw_wav = output_dir / "render_raw.wav"
-        if not midi_to_wav(midi_path, raw_wav, soundfont, params.sample_rate):
+        if not midi_to_wav(midi_path, raw_wav, soundfont, params.sample_rate, gain=5.0):
             result.errors.append("MIDI to WAV conversion failed")
             return result
 
         # Apply effects
-        final_wav = output_dir / "production.wav"
+        final_wav = output_dir / _timestamped_filename("production", "wav")
         if params.mix_settings:
             if not apply_audio_effects(raw_wav, final_wav, params.mix_settings):
                 # Fall back to raw
@@ -455,9 +463,9 @@ def produce_arrangement(
 
         result.wav_path = str(final_wav)
 
-        # Export to MP3 if requested
+        # Export to MP3 if requested (same timestamp as WAV)
         if params.export_mp3:
-            mp3_path = output_dir / "production.mp3"
+            mp3_path = final_wav.with_suffix(".mp3")
             if wav_to_mp3(final_wav, mp3_path, params.mp3_bitrate):
                 result.mp3_path = str(mp3_path)
             else:
@@ -514,12 +522,12 @@ def produce_midi_file(
     try:
         # Render to WAV
         raw_wav = output_dir / "render_raw.wav"
-        if not midi_to_wav(midi_path, raw_wav, soundfont, params.sample_rate):
+        if not midi_to_wav(midi_path, raw_wav, soundfont, params.sample_rate, gain=5.0):
             result.errors.append("MIDI to WAV conversion failed")
             return result
 
         # Apply effects
-        final_wav = output_dir / "production.wav"
+        final_wav = output_dir / _timestamped_filename("production", "wav")
         if params.mix_settings:
             apply_audio_effects(raw_wav, final_wav, params.mix_settings)
         else:
