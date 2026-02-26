@@ -447,7 +447,7 @@ def produce_arrangement(
 
         # Render to WAV
         raw_wav = output_dir / "render_raw.wav"
-        if not midi_to_wav(midi_path, raw_wav, soundfont, params.sample_rate, gain=5.0):
+        if not midi_to_wav(midi_path, raw_wav, soundfont, params.sample_rate, gain=1.5):
             result.errors.append("MIDI to WAV conversion failed")
             return result
 
@@ -522,7 +522,7 @@ def produce_midi_file(
     try:
         # Render to WAV
         raw_wav = output_dir / "render_raw.wav"
-        if not midi_to_wav(midi_path, raw_wav, soundfont, params.sample_rate, gain=5.0):
+        if not midi_to_wav(midi_path, raw_wav, soundfont, params.sample_rate, gain=1.5):
             result.errors.append("MIDI to WAV conversion failed")
             return result
 
