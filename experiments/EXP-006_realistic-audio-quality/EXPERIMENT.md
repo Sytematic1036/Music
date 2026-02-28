@@ -2,7 +2,8 @@
 
 | Fält | Värde |
 |------|-------|
-| **Status** | EXPERIMENTAL |
+| **Status** | VERIFIED |
+| **Commit** | 127a31a |
 | **Ramverk** | Python + FluidSynth + FFmpeg |
 | **Bygger från** | src/production.py |
 | **Datum** | 2026-02-28 |
