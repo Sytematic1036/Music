@@ -1,0 +1,28 @@
+# Success Criteria for EXP-006: Realistic Audio Quality
+
+primary_goals:
+  - name: "Improved reverb"
+    description: "Replace aecho with proper convolution reverb (afir filter)"
+    verification: "Audio has natural room ambience, not echo effect"
+
+  - name: "Humanized MIDI"
+    description: "Add subtle timing and velocity variations"
+    verification: "Notes don't sound mechanically perfect"
+
+  - name: "GUI integration"
+    description: "Rearrange tab uses improved production"
+    verification: "All Playwright tests pass"
+
+secondary_goals:
+  - name: "A/B comparison"
+    description: "Easy way to compare old vs new production"
+
+  - name: "Quality presets"
+    description: "Draft, Standard, High quality options"
+
+test_file: "C:\\Users\\haege\\Kod\\Music\\output_2026-02-26_1034\\02_arrangement.mid"
+
+metrics:
+  - "Playwright test suite passes 100%"
+  - "Audio file generates without errors"
+  - "Subjective: sounds less digital"
